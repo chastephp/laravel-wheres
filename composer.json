@@ -1,0 +1,30 @@
+{
+  "name": "chastephp/laravel-wheres",
+  "description": "a laravel wheres.",
+  "keywords": [
+    "laravel",
+    "laravel-where"
+  ],
+  "license": "MIT",
+  "require": {
+    "php": "^7.1.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "ChastePhp\\LaravelWheres\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "ChastePhp\\LaravelWheres\\ServiceProvider"
+      ]
+    }
+  },
+  "authors": [
+    {
+      "name": "widdy",
+      "email": "kingwide@foxmail.com"
+    }
+  ]
+}
