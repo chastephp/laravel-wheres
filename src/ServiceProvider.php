@@ -2,8 +2,8 @@
 
 namespace ChastePhp\LaravelWheres;
 
-use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -13,7 +13,7 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function boot()
     {
-        Builder::macro('wheres', function ($where, $method = 'where') {
+        Builder::macro('wheres', function (array $where, $method = 'where') {
             foreach ($where as $key => $value) {
                 $type = gettype($value);
                 // recursive
@@ -39,12 +39,12 @@ class ServiceProvider extends BaseServiceProvider
                     // custom
                     $appends = ['<>' => 'Between', '><' => 'NotBetween'];
                     if (isset($appends[$operator])) {
-                        $this->{$method . $appends[$operator]}($column, $value);
+                        $this->{$method.$appends[$operator]}($column, $value);
                         continue;
                     }
 
                     if ($operator === '!' && is_array($value)) {
-                        $this->{$method . 'NotIn'}($column, $value);
+                        $this->{$method.'NotIn'}($column, $value);
                         continue;
                     }
 
@@ -54,12 +54,12 @@ class ServiceProvider extends BaseServiceProvider
                         continue;
                     }
 
-                    throw new \InvalidArgumentException('Not support operator ' . $operator);
+                    throw new \InvalidArgumentException('Not support operator '.$operator);
 
                 } else {
                     switch ($type) {
                         case 'array':
-                            $this->{$method . 'In'}($column, $value);
+                            $this->{$method.'In'}($column, $value);
                             break;
                         default:
                         {
@@ -68,6 +68,8 @@ class ServiceProvider extends BaseServiceProvider
                     }
                 }
             }
+
+            return $this;
         });
     }
 }
