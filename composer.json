@@ -1,8 +1,9 @@
 {
   "name": "chastephp/laravel-wheres",
-  "description": "a laravel wheres.",
+  "description": "A laravel wheres. Inspired by medoo ",
   "keywords": [
     "laravel",
+    "laravel-query",
     "laravel-where"
   ],
   "license": "MIT",
