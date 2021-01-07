@@ -54,9 +54,9 @@ User::query()->wheres([
 
 User::query()->wheres([
     "OR" => [
-    		"user_id" => [2, 123, 234, 54],
-    		"email" => ["foo@bar.com", "cat@dog.com", "admin@medoo.in"]
-    	]
+        "user_id" => [2, 123, 234, 54],
+        "email" => ["foo@bar.com", "cat@dog.com", "admin@medoo.in"]
+    ]
 ])->get();
 // WHERE
 // user_id IN (2,123,234,54) OR
@@ -64,13 +64,13 @@ User::query()->wheres([
 
 
 User::query()->wheres([
-   "AND" => [
-   		"user_name[!]" => "foo",
-   		"user_id[!]" => 1024,
-   		"email[!]" => ["foo@bar.com", "cat@dog.com", "admin@medoo.in"],
-   		"city[!]" => null,
-   		"promoted[!]" => true
-   	]
+    "AND" => [
+        "user_name[!]" => "foo",
+        "user_id[!]" => 1024,
+        "email[!]" => ["foo@bar.com", "cat@dog.com", "admin@medoo.in"],
+        "city[!]" => null,
+        "promoted[!]" => true
+    ]
 ])->get();
 // WHERE
 // `user_name` != 'foo' AND
@@ -85,29 +85,29 @@ User::query()->wheres([
 ```php
 
 User::query()->wheres([
-   "AND" => [
-   		"OR" => [
-   			"user_name" => "foo",
-   			"email" => "foo@bar.com"
-   		],
-   		"password" => "12345"
-   	]
+    "AND" => [
+        "OR" => [
+            "user_name" => "foo",
+            "email" => "foo@bar.com"
+        ],
+        "password" => "12345"
+    ]
 ])->get();
 // WHERE (user_name = 'foo' OR email = 'foo@bar.com') AND password = '12345'
 
 
 
 User::query()->wheres([
-  "AND #1" => [
-  		"OR #the first condition" => [
-  			"user_name" => "foo",
-  			"email" => "foo@bar.com"
-  		],
-  		"OR #the second condition" => [
-  			"user_name" => "bar",
-  			"email" => "bar@foo.com"
-  		]
-  	]
+    "AND #1" => [
+        "OR #the first condition" => [
+            "user_name" => "foo",
+            "email" => "foo@bar.com"
+        ],
+        "OR #the second condition" => [
+            "user_name" => "bar",
+            "email" => "bar@foo.com"
+        ]
+    ]
 ])->get();
 // WHERE (
 // 	(
