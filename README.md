@@ -37,7 +37,7 @@ User::query()->wheres([
 User::query()->wheres([
     "age[<>]" => [20, 50]
 ])->get();
-// WHERE age NOT BETWEEN 20 AND 50
+// WHERE age BETWEEN 20 AND 50
 
 
 User::query()->wheres([
