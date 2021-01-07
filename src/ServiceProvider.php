@@ -38,7 +38,7 @@ class ServiceProvider extends BaseServiceProvider
 
                     // custom
                     $appends = ['<>' => 'Between', '><' => 'NotBetween'];
-                    if (isset($methods[$operator])) {
+                    if (isset($appends[$operator])) {
                         $this->{$method . $appends[$operator]}($column, $value);
                         continue;
                     }
