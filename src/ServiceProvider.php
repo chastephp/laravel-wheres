@@ -13,6 +13,12 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function boot()
     {
+        /**
+         * success
+         * @param  $where array
+         * @param  $method string where orWhere
+         * @return static|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder
+         */
         Builder::macro('wheres', function (array $where, $method = 'where') {
             foreach ($where as $key => $value) {
                 $type = gettype($value);
