@@ -65,7 +65,7 @@ class ServiceProvider extends BaseServiceProvider
                 } else {
                     switch ($type) {
                         case 'array':
-                            $this->{$method.'In'}($column, $value);
+                            $this->{$method.'In'}($column, (array) $value);
                             break;
                         default:
                         {
