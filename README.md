@@ -15,52 +15,52 @@ composer require chastephp/laravel-wheres
 
 ## Usage
 
+The SQL in the comments is based on MySQL
+
 ```php
 User::query()->wheres([
     "email" => "foo@bar.com"
-])->get();
-//  WHERE email = 'foo@bar.com'
+])->toSql();
+// select * from `users` where `email` = ?
 
 
 User::query()->wheres([
     "user_id[>=]" => 200
-])->get();
-// WHERE user_id >= 200
+])->toSql();
+// select * from `users` where `user_id` >= ?
 
 
 User::query()->wheres([
     "user_id[!]" => 200,
-])->get();
-// WHERE user_id != 200
+])->toSql();
+// select * from `users` where `user_id` != ?
 
 
 User::query()->wheres([
     "age[<>]" => [20, 50]
-])->get();
-// WHERE age BETWEEN 20 AND 50
+])->toSql();
+// select * from `users` where `age` between ? and ?
 
 
 User::query()->wheres([
-    "birthday[<>]" => [date("Y-m-d", mktime(0, 0, 0, 1, 1, 2015)), date("Y-m-d")]
-])->get();
-// WHERE ("birthday" BETWEEN '2015-01-01' AND '2017-01-01')
+    "birthday[<>]" => [date("Y-m-d", strtotime('-30 days')), date("Y-m-d")]
+])->toSql();
+// select * from `users` where `birthday` between ? and ?
 
 
 User::query()->wheres([
-    "birthday[><]" => [date("Y-m-d", mktime(0, 0, 0, 1, 1, 2015)), date("Y-m-d")]
-])->get();
-// WHERE ("birthday" NOT BETWEEN '2015-01-01' AND '2017-01-01')
+    "birthday[><]" => [date("Y-m-d", strtotime('-30 days')), date("Y-m-d")]
+])->toSql();
+// select * from `users` where `birthday` not between ? and ?
 
 
 User::query()->wheres([
     "OR" => [
-        "user_id" => [2, 123, 234, 54],
+        "user_id" => [2, 123],
         "email" => ["foo@bar.com", "cat@dog.com", "admin@medoo.in"]
     ]
-])->get();
-// WHERE
-// user_id IN (2,123,234,54) OR
-// email IN ('foo@bar.com','cat@dog.com','admin@medoo.in')
+])->toSql();
+// select * from `users` where (`user_id` in (?, ?) or `email` in (?, ?, ?))
 
 
 User::query()->wheres([
@@ -71,19 +71,12 @@ User::query()->wheres([
         "city[!]" => null,
         "promoted[!]" => true
     ]
-])->get();
-// WHERE
-// `user_name` != 'foo' AND
-// `user_id` != 1024 AND
-// `email` NOT IN ('foo@bar.com','cat@dog.com','admin@medoo.in') AND
-// `city` IS NOT NULL
-// `promoted` != 1
-
+])->toSql();
+// select * from `users` where (`user_name` != ? and `user_id` != ? and `email` not in (?, ?, ?) and `city` is not null and `promoted` != ?)
 ```
 
 
 ```php
-
 User::query()->wheres([
     "AND" => [
         "OR" => [
@@ -92,9 +85,8 @@ User::query()->wheres([
         ],
         "password" => "12345"
     ]
-])->get();
-// WHERE (user_name = 'foo' OR email = 'foo@bar.com') AND password = '12345'
-
+])->toSql();
+// select * from `users` where ((`user_name` = ? or `email` = ?) and `password` = ?)
 
 
 User::query()->wheres([
@@ -108,31 +100,20 @@ User::query()->wheres([
             "email" => "bar@foo.com"
         ]
     ]
-])->get();
-// WHERE (
-// 	(
-// 		"user_name" = 'foo' OR "email" = 'foo@bar.com'
-// 	)
-// 	AND
-// 	(
-// 		"user_name" = 'bar' OR "email" = 'bar@foo.com'
-// 	)
-// )
+])->toSql();
+// select * from `users` where ((`user_name` = ? or `email` = ?) and (`user_name` = ? or `email` = ?))
 ```
 
 
 ### LIKE
 ```php
 User::query()->wheres([
-   "city[~]" => "%stan%" 
-])->get();
-// WHERE "city" LIKE '%stan%'
+    "city[~]" => "%stan%"
+])->toSql();
+// select * from `users` where `city` like ?
 
 User::query()->wheres([
-   "city[!~]" => "%stan%" 
-])->get();
-// WHERE "city" NOT LIKE '%stan%'
-
+    "city[!~]" => "%stan%"
+])->toSql();
+// select * from `users` where `city` not like ?
 ```
-
-
