@@ -75,6 +75,7 @@ User::query()->wheres([
 // select * from `users` where (`user_name` != ? and `user_id` != ? and `email` not in (?, ?, ?) and `city` is not null and `promoted` != ?)
 ```
 
+###Compound
 
 ```php
 User::query()->wheres([
@@ -87,7 +88,6 @@ User::query()->wheres([
     ]
 ])->toSql();
 // select * from `users` where ((`user_name` = ? or `email` = ?) and `password` = ?)
-
 
 User::query()->wheres([
     "AND #1" => [
@@ -102,6 +102,20 @@ User::query()->wheres([
     ]
 ])->toSql();
 // select * from `users` where ((`user_name` = ? or `email` = ?) and (`user_name` = ? or `email` = ?))
+
+User::query()->wheres([
+    "nickname[~]#1" => '%foo%',
+    "nickname[~]#2" => '%bar%',
+])->toSql();
+// select * from `users` where `nickname` like ? and `nickname` like ?
+
+User::query()->wheres([
+    'OR' => [
+        "nickname[~]#1" => '%foo%',
+        "nickname[~]#2" => '%bar%',
+    ]
+])->toSql();
+// select * from `users` where (`nickname` like ? or `nickname` like ?)
 ```
 
 
