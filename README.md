@@ -75,7 +75,7 @@ User::query()->wheres([
 // select * from `users` where (`user_name` != ? and `user_id` != ? and `email` not in (?, ?, ?) and `city` is not null and `promoted` != ?)
 ```
 
-###Compound
+### Compound
 
 ```php
 User::query()->wheres([
