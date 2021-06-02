@@ -14,7 +14,7 @@ class ServiceProvider extends BaseServiceProvider
     public function boot()
     {
         /**
-         * success
+         * wheres
          * @param  $where array
          * @param  $method string where orWhere
          * @return static|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder
@@ -73,6 +73,23 @@ class ServiceProvider extends BaseServiceProvider
                         }
                     }
                 }
+            }
+
+            return $this;
+        });
+        
+        /**
+         * orders
+         * @param  $orders array
+         * @return static|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder
+         */
+        Builder::macro('ordersBy', function (array $orders = []) {
+            foreach ($orders as $column => $direction) {
+                if (is_int($column)) {
+                    $column = $direction;
+                    $direction = 'ASC';
+                }
+                $this->orderBy($column, $direction);
             }
 
             return $this;
