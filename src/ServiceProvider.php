@@ -38,6 +38,22 @@ class ServiceProvider extends BaseServiceProvider
 
                 preg_match('/([a-zA-Z0-9_\.]+)(\[(?<operator>\>\=?|\<\=?|\!|\<\>|\>\<|\!?~)\])?/i', $key, $match);
                 $column = $match[1];
+                
+                $columns = preg_split('/(\||\&)/', $column, -1, PREG_SPLIT_DELIM_CAPTURE);
+                if (count($columns) >= 3) { // support quick &(and) |(or)
+                    $full_operator = $match[2] ?? '';
+                    $this->where(function ($query) use ($columns, $value, $full_operator) {
+                        $delimiter = '&';
+                        foreach ($columns as $col) {
+                            if (in_array($col, ['|', '&'])) {
+                                $delimiter = $col;
+                                continue;
+                            }
+                            $query->wheres([$col . $full_operator => $value], ['&' => 'where', '|' => 'orWhere'][$delimiter]);
+                        }
+                    });
+                    continue;
+                }
 
                 if (isset($match['operator'])) {
                     $operator = $match['operator'];
