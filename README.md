@@ -131,3 +131,17 @@ User::query()->wheres([
 ])->toSql();
 // select * from `users` where `city` not like ?
 ```
+
+
+### Quick And/Or
+```php
+User::query()->wheres([
+    "province|city[~]" => "%stan%"
+])->toSql();
+// select * from `users` where (`province` like ? or `city` like ?)
+
+User::query()->wheres([
+   "province&city[~]" => "%stan%"
+])->toSql();
+// select * from `users` where (`province` like ? and `city` like ?)
+```
