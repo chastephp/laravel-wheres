@@ -36,7 +36,7 @@ class ServiceProvider extends BaseServiceProvider
                     continue;
                 }
 
-                preg_match('/([a-zA-Z0-9_\.]+)(\[(?<operator>\>\=?|\<\=?|\!|\<\>|\>\<|\!?~)\])?/i', $key, $match);
+                preg_match('/([a-zA-Z0-9_\.\|\&]+)(\[(?<operator>\>\=?|\<\=?|\!|\<\>|\>\<|\!?~)\])?/i', $key, $match);
                 $column = $match[1];
                 
                 $columns = preg_split('/(\||\&)/', $column, -1, PREG_SPLIT_DELIM_CAPTURE);
