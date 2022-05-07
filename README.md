@@ -23,6 +23,10 @@ User::query()->wheres([
 ])->toSql();
 // select * from `users` where `email` = ?
 
+User::query()->wheres([
+    "user_id[>]" => 200
+])->toSql();
+// select * from `users` where `user_id` > ?
 
 User::query()->wheres([
     "user_id[>=]" => 200
